@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeAtlas - Code Analysis Platform</title>
+    <link rel="stylesheet" href="/frontend/styles.css?v=3">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>🗺️ CodeAtlas</h1>
+                <p>Intelligent Code Analysis Platform</p>
+            </div>
+            <nav class="nav">
+                <button id="homeBtn" class="nav-btn active">Home</button>
+                <button id="dashboardBtn" class="nav-btn">Dashboard</button>
+                <button id="uploadBtn" class="nav-btn">Upload Project</button>
+                <button id="loginBtn" class="nav-btn">Login</button>
+                <button id="logoutBtn" class="nav-btn hidden">Logout</button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Section -->
+            <section id="homeSection" class="section active">
+                <div class="hero">
+                    <div class="hero-badge">
+                        <span>🚀 Intelligent Code Analysis Platform</span>
+                    </div>
+                    <h1>Understand Any Codebase in Minutes</h1>
+                    <p>Upload your project and get instant insights into structure, dependencies, and architecture. Perfect for developers, students, and teams.</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">10+</span>
+                            <span class="stat-label">Languages</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Automated</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Setup</span>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        <button id="getStartedBtn" class="cta-button primary">Get Started Free</button>
+                        <button class="cta-button secondary" onclick="window.location.href='#features'">Learn More</button>
+                    </div>
+                </div>
+                
+                <div id="features" class="features-section">
+                    <h2>Powerful Features for Code Understanding</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📦</div>
+                            <h3>Smart Project Upload</h3>
+                            <p>Upload ZIP files or connect GitHub repositories instantly. Our system handles everything automatically.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔍</div>
+                            <h3>Deep Code Analysis</h3>
+                            <p>Automatic detection of classes, functions, imports, and project structure using advanced AST parsing.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🗂️</div>
+                            <h3>Interactive Structure Explorer</h3>
+                            <p>Navigate through complex codebases with our intuitive tree visualization and file organization.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🕸️</div>
+                            <h3>Dependency Mapping</h3>
+                            <p>Visualize relationships between files and modules to understand architecture and dependencies.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Project Dashboard</h3>
+                            <p>Get comprehensive statistics about your projects including file counts, languages, and complexity metrics.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔐</div>
+                            <h3>Secure & Private</h3>
+                            <p>Your code is safe with us. We use industry-standard encryption and security practices.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="how-it-works">
+                    <h2>How It Works</h2>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Upload Your Project</h3>
+                                <p>Simply upload a ZIP file or provide a GitHub repository URL</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Automatic Analysis</h3>
+                                <p>Our system analyzes your code structure and dependencies</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Explore Insights</h3>
+                                <p>Visualize your codebase and understand the architecture</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Login Section -->
+            <section id="loginSection" class="section">
+                <div class="auth-container">
+                    <h2>Login</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginUsername">Username</label>
+                            <input type="text" id="loginUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="submit-button">Login</button>
+                    </form>
+                    <p class="switch-auth">Don't have an account? <a href="#" id="showRegister">Register</a></p>
+                </div>
+            </section>
+
+            <!-- Register Section -->
+            <section id="registerSection" class="section">
+                <div class="auth-container">
+                    <h2>Register</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="registerUsername">Username</label>
+                            <input type="text" id="registerUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Password</label>
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <button type="submit" class="submit-button">Register</button>
+                    </form>
+                    <p class="switch-auth">Already have an account? <a href="#" id="showLogin">Login</a></p>
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section id="uploadSection" class="section">
+                <div class="upload-container">
+                    <h2>Upload Project</h2>
+                    <div class="upload-tabs">
+                        <button class="tab-btn active" data-tab="zip">ZIP Upload</button>
+                        <button class="tab-btn" data-tab="github">GitHub URL</button>
+                    </div>
+                    
+                    <div id="zipTab" class="tab-content active">
+                        <form id="zipUploadForm">
+                            <div class="form-group">
+                                <label for="projectName">Project Name</label>
+                                <input type="text" id="projectName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectDescription">Description (optional)</label>
+                                <textarea id="projectDescription" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipFile">ZIP File</label>
+                                <input type="file" id="zipFile" accept=".zip" required>
+                            </div>
+                            <button type="submit" class="submit-button">Upload & Analyze</button>
+                        </form>
+                    </div>
+                    
+                    <div id="githubTab" class="tab-content">
+                        <form id="githubUploadForm">
+                            <div class="form-group">
+                                <label for="githubProjectName">Project Name</label>
+                                <input type="text" id="githubProjectName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="githubDescription">Description (optional)</label>
+                                <textarea id="githubDescription" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="githubUrl">GitHub Repository URL</label>
+                                <input type="url" id="githubUrl" placeholder="https://github.com/username/repo" required>
+                            </div>
+                            <button type="submit" class="submit-button">Add Repository</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="section">
+                <div class="dashboard-container">
+                    <h2>Project Dashboard</h2>
+                    <div id="projectsList" class="projects-list">
+                        <p class="no-projects">No projects uploaded yet. Upload your first project to get started!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project Analysis Section -->
+            <section id="analysisSection" class="section">
+                <div class="analysis-container">
+                    <button id="backToDashboard" class="back-button">← Back to Dashboard</button>
+                    <h2 id="analysisProjectName">Project Analysis</h2>
+                    
+                    <div class="analysis-tabs">
+                        <button class="analysis-tab-btn active" data-tab="overview">Overview</button>
+                        <button class="analysis-tab-btn" data-tab="structure">Structure</button>
+                        <button class="analysis-tab-btn" data-tab="dependencies">Dependencies</button>
+                        <button class="analysis-tab-btn" data-tab="ai-insights">🤖 AI Insights</button>
+                    </div>
+                    
+                    <div id="overviewTab" class="analysis-tab-content active">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h3>📁 Files</h3>
+                                <p id="fileCount" class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>📂 Folders</h3>
+                                <p id="folderCount" class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>� Lines of Code</h3>
+                                <p id="linesOfCode" class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>�🐍 Languages</h3>
+                                <p id="languages" class="stat-value">-</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>📦 Classes</h3>
+                                <p id="totalClasses" class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>⚡ Functions</h3>
+                                <p id="totalFunctions" class="stat-value">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="ai-insightsTab" class="analysis-tab-content">
+                        <div class="ai-insights-container">
+                            <h3>🤖 AI-Powered Code Analysis</h3>
+                            <div id="aiInsightsContent">
+                                <div class="loading"><div class="spinner"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="structureTab" class="analysis-tab-content">
+                        <div id="structureTree" class="structure-tree"></div>
+                    </div>
+                    
+                    <div id="dependenciesTab" class="analysis-tab-content">
+                        <div id="dependencyGraph" class="dependency-graph"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/frontend/script.js?v=5"></script>
+</body>
+</html>
