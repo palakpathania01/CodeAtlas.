@@ -151,43 +151,8 @@ body {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Home Section */
@@ -852,6 +817,81 @@ box-shadow: var(--shadow-sm);
 .dependency-item strong {
     color: var(--text-primary);
     font-weight: 600;
+}
+
+.complexity-section,
+.duplication-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-lg);
+}
+
+.complexity-section h3,
+.duplication-section h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+    font-size: 1.25rem;
+}
+
+.complexity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: var(--surface);
+    border-radius: 0.5rem;
+    border-left: 4px solid;
+    transition: var(--transition);
+}
+
+.complexity-item:hover {
+    transform: translateX(4px);
+}
+
+.complexity-low {
+    border-left-color: #10b981;
+}
+
+.complexity-medium {
+    border-left-color: #f59e0b;
+}
+
+.complexity-high {
+    border-left-color: #ef4444;
+}
+
+.file-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.complexity-score {
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    background: var(--background);
+}
+
+.duplication-item {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: var(--surface);
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--warning);
+}
+
+.duplication-item ul {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.duplication-item li {
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
 }
 
 .dependency-item ul {

@@ -41,6 +41,8 @@ class PythonAnalyzer:
         self.lines_of_code: int = 0
         self.internal_dependencies: Dict[str, Set[str]] = defaultdict(set)
         self.external_dependencies: Dict[str, Set[str]] = defaultdict(set)
+        self.cyclomatic_complexity: Dict[str, int] = {}
+        self.code_duplication: Dict[str, List[str]] = {}
     
     def analyze_zip(self, zip_path: str) -> Dict[str, Any]:
         """
@@ -236,6 +238,15 @@ class PythonAnalyzer:
                         else:
                             self.external_dependencies[relative_path].add(full_import)
             
+            # Calculate cyclomatic complexity for this file
+            complexity = self._calculate_cyclomatic_complexity(tree)
+            self.cyclomatic_complexity[relative_path] = complexity
+            
+            # Detect code duplication
+            duplicates = self._detect_code_duplication(content)
+            if duplicates:
+                self.code_duplication[relative_path] = duplicates
+            
             # Extract classes and functions with more details
             self.classes[relative_path] = []
             self.functions[relative_path] = []
@@ -297,6 +308,47 @@ class PythonAnalyzer:
             return str(node.returns)
         return str(node.returns) if node.returns else None
     
+    def _calculate_cyclomatic_complexity(self, tree: ast.AST) -> int:
+        """
+        Calculate cyclomatic complexity of a Python file.
+        
+        Cyclomatic complexity = number of decision points + 1
+        Decision points: if, for, while, except, and, or, comprehensions
+        """
+        complexity = 1  # Base complexity
+        
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.If, ast.For, ast.While, ast.ExceptHandler)):
+                complexity += 1
+            elif isinstance(node, ast.BoolOp):
+                complexity += len(node.values) - 1
+            elif isinstance(node, (ast.ListComp, ast.DictComp, ast.SetComp, ast.GeneratorExp)):
+                complexity += 1
+        
+        return complexity
+    
+    def _detect_code_duplication(self, content: str) -> List[str]:
+        """
+        Detect potential code duplication by finding repeated code blocks.
+        
+        Returns list of duplicated line ranges.
+        """
+        lines = content.split('\n')
+        code_lines = [line.strip() for line in lines if line.strip() and not line.strip().startswith('#')]
+        
+        # Find repeated sequences of 3+ lines
+        duplicates = []
+        seen_blocks = {}
+        
+        for i in range(len(code_lines) - 2):
+            block = '\n'.join(code_lines[i:i+3])
+            if block in seen_blocks:
+                duplicates.append(f"Lines {i+1}-{i+3} similar to lines {seen_blocks[block]+1}-{seen_blocks[block]+3}")
+            else:
+                seen_blocks[block] = i
+        
+        return duplicates[:5]  # Return top 5 duplicates
+    
     def _get_results(self) -> Dict[str, Any]:
         """
         Compile and return analysis results.
@@ -317,5 +369,8 @@ class PythonAnalyzer:
             'file_details': self.file_details,
             'lines_of_code': self.lines_of_code,
             'total_classes': sum(len(classes) for classes in self.classes.values()),
-            'total_functions': sum(len(funcs) for funcs in self.functions.values())
+            'total_functions': sum(len(funcs) for funcs in self.functions.values()),
+            'cyclomatic_complexity': self.cyclomatic_complexity,
+            'code_duplication': self.code_duplication,
+            'average_complexity': sum(self.cyclomatic_complexity.values()) / len(self.cyclomatic_complexity) if self.cyclomatic_complexity else 0
         }

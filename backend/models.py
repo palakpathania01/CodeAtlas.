@@ -49,6 +49,9 @@ class Analysis(Base):
     lines_of_code = Column(Integer, default=0)
     total_classes = Column(Integer, default=0)
     total_functions = Column(Integer, default=0)
+    cyclomatic_complexity = Column(Text)  # JSON string
+    code_duplication = Column(Text)  # JSON string
+    average_complexity = Column(Integer, default=0)
     ml_analysis = Column(Text)  # JSON string for ML results
     created_at = Column(DateTime, default=datetime.utcnow)
     

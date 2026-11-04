@@ -641,6 +641,54 @@ function displayAnalysis(analysis) {
     document.getElementById('languages').textContent = analysis.languages ? analysis.languages.join(', ') : '-';
     document.getElementById('totalClasses').textContent = analysis.total_classes || 0;
     document.getElementById('totalFunctions').textContent = analysis.total_functions || 0;
+    
+    // New metrics
+    document.getElementById('avgComplexity').textContent = analysis.average_complexity ? analysis.average_complexity.toFixed(2) : '0';
+    
+    // Code quality based on complexity
+    const avgComplexity = analysis.average_complexity || 0;
+    let quality = 'Excellent';
+    if (avgComplexity > 20) quality = 'Poor';
+    else if (avgComplexity > 15) quality = 'Fair';
+    else if (avgComplexity > 10) quality = 'Good';
+    document.getElementById('codeQuality').textContent = quality;
+    document.getElementById('codeQuality').style.color = getQualityColor(quality);
+
+    // Complexity details
+    const complexityDetails = document.getElementById('complexityDetails');
+    if (analysis.cyclomatic_complexity && Object.keys(analysis.cyclomatic_complexity).length > 0) {
+        complexityDetails.innerHTML = Object.entries(analysis.cyclomatic_complexity).map(([file, complexity]) => `
+            <div class="complexity-item ${getComplexityClass(complexity)}">
+                <span class="file-name">📄 ${file}</span>
+                <span class="complexity-score">Complexity: ${complexity}</span>
+            </div>
+        `).join('');
+    } else {
+        complexityDetails.innerHTML = '<p>No complexity data available</p>';
+    }
+
+    // Duplication details
+    const duplicationDetails = document.getElementById('duplicationDetails');
+    if (analysis.code_duplication && Object.keys(analysis.code_duplication).length > 0) {
+        let hasDuplication = false;
+        let html = '';
+        Object.entries(analysis.code_duplication).forEach(([file, duplicates]) => {
+            if (duplicates && duplicates.length > 0) {
+                hasDuplication = true;
+                html += `
+                    <div class="duplication-item">
+                        <strong>📄 ${file}</strong>
+                        <ul>
+                            ${duplicates.map(dup => `<li>⚠️ ${dup}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+        });
+        duplicationDetails.innerHTML = hasDuplication ? html : '<p>✅ No code duplication detected</p>';
+    } else {
+        duplicationDetails.innerHTML = '<p>✅ No code duplication detected</p>';
+    }
 
     // Structure
     const structureTree = document.getElementById('structureTree');
@@ -649,6 +697,22 @@ function displayAnalysis(analysis) {
     // Dependencies
     const dependencyGraph = document.getElementById('dependencyGraph');
     dependencyGraph.innerHTML = formatDependencies(analysis.dependencies || {}, analysis.internal_dependencies || {}, analysis.external_dependencies || {});
+}
+
+function getQualityColor(quality) {
+    switch(quality) {
+        case 'Excellent': return '#10b981';
+        case 'Good': return '#3b82f6';
+        case 'Fair': return '#f59e0b';
+        case 'Poor': return '#ef4444';
+        default: return '#64748b';
+    }
+}
+
+function getComplexityClass(complexity) {
+    if (complexity <= 10) return 'complexity-low';
+    if (complexity <= 20) return 'complexity-medium';
+    return 'complexity-high';
 }
 
 function formatStructure(structure, indent = 0) {

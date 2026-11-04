@@ -124,6 +124,56 @@ def home():
     }
 
 
+@app.get("/health")
+async def health_check():
+    """
+    Health check endpoint with system metrics.
+    Useful for monitoring and deployment health checks.
+    """
+    import psutil
+    import platform
+    from datetime import datetime
+    
+    try:
+        # System metrics
+        cpu_percent = psutil.cpu_percent(interval=0.1)
+        memory = psutil.virtual_memory()
+        disk = psutil.disk_usage('/')
+        
+        return {
+            "status": "healthy",
+            "timestamp": datetime.utcnow().isoformat(),
+            "system": {
+                "platform": platform.system(),
+                "platform_version": platform.version(),
+                "python_version": platform.python_version(),
+                "cpu_count": psutil.cpu_count(),
+                "cpu_percent": cpu_percent,
+                "memory": {
+                    "total_gb": round(memory.total / (1024**3), 2),
+                    "available_gb": round(memory.available / (1024**3), 2),
+                    "percent_used": memory.percent
+                },
+                "disk": {
+                    "total_gb": round(disk.total / (1024**3), 2),
+                    "free_gb": round(disk.free / (1024**3), 2),
+                    "percent_used": disk.percent
+                }
+            },
+            "application": {
+                "name": "CodeAtlas",
+                "version": "1.0.0",
+                "uptime": "running"
+            }
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "error": str(e),
+            "timestamp": datetime.utcnow().isoformat()
+        }
+
+
 @app.post("/register")
 def register(user: UserRegister, db: Session = Depends(get_db)):
     try:
@@ -517,6 +567,9 @@ async def analyze_project(
             lines_of_code=results.get('lines_of_code', 0),
             total_classes=results.get('total_classes', 0),
             total_functions=results.get('total_functions', 0),
+            cyclomatic_complexity=json.dumps(results.get('cyclomatic_complexity', {})),
+            code_duplication=json.dumps(results.get('code_duplication', {})),
+            average_complexity=int(results.get('average_complexity', 0)),
             ml_analysis=json.dumps(ml_results)
         )
         
@@ -577,9 +630,12 @@ async def get_project_analysis(
         "classes": json.loads(analysis.classes) if analysis.classes else {},
         "functions": json.loads(analysis.functions) if analysis.functions else {},
         "file_details": json.loads(analysis.file_details) if analysis.file_details else {},
-        "lines_of_code": analysis.lines_of_code or 0,
-        "total_classes": analysis.total_classes or 0,
-        "total_functions": analysis.total_functions or 0,
+        "lines_of_code": analysis.lines_of_code,
+        "total_classes": analysis.total_classes,
+        "total_functions": analysis.total_functions,
+        "cyclomatic_complexity": json.loads(analysis.cyclomatic_complexity) if analysis.cyclomatic_complexity else {},
+        "code_duplication": json.loads(analysis.code_duplication) if analysis.code_duplication else {},
+        "average_complexity": analysis.average_complexity,
         "ml_analysis": json.loads(analysis.ml_analysis) if analysis.ml_analysis else {},
         "created_at": analysis.created_at
     }
